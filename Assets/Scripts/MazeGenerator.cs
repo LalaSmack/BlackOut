@@ -5,9 +5,8 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     private GameObject roomPrefab = null;
 
-    [SerializeField]
+    
     private int mazeHeight = 10;
-    [SerializeField]
     private int mazeWidth = 15;
     private Room[,] rooms = new Room[15, 15];
     private float roomWidth = 1.0f;
@@ -30,12 +29,13 @@ public class MazeGenerator : MonoBehaviour
                 rooms[i, j].index = new Vector2Int(i, j);
             }
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        RemoveWall(1, 1, Room.WallOrientation.TOP);
     }
 
     private void GetRoomBounds()
@@ -60,10 +60,51 @@ public class MazeGenerator : MonoBehaviour
 
         roomWidth = maxBounds.x - minBounds.x;
         roomHeight = maxBounds.y - minBounds.y;
+        }
     }
+
+    private void RemoveWall(int i, int j, Room.WallOrientation direction)
+    {
+        if ( direction == Room.WallOrientation.NONE)
+        {
+            return;
+        }
+
+        Room currentRoom = rooms[i, j];
+        Debug.Log(currentRoom.name + " " + currentRoom.GetWallState(direction).ToString());
+        Room.WallOrientation opp = Room.WallOrientation.NONE;
+
+        if ((direction == Room.WallOrientation.TOP) && (j + 1 < mazeHeight))
+        {
+            opp = Room.WallOrientation.BOTTOM;
+            j++;
+        }
+        else if ((direction == Room.WallOrientation.BOTTOM) && (j - 1 >= 0))
+        {
+            opp = Room.WallOrientation.TOP;
+            j--;
+        }
+        else if ((direction == Room.WallOrientation.LEFT) && (i - 1 >= 0))
+        {
+            opp = Room.WallOrientation.RIGHT;
+            i--;
+        }
+        else if ((direction == Room.WallOrientation.RIGHT) && (i + 1 < mazeWidth))
+        {
+            opp = Room.WallOrientation.LEFT;
+            i++;
+        }
+
+        currentRoom.SetWallState(direction, false);
+        rooms[i, j].SetWallState(opp, false);
     }
+
+
+    // Generate the maze
     private void GenerateMaze()
     {
-        // Implement maze generation algorithm here
+        // Implement maze generation algorithm here: Depth-first search.
+
+
     }
 }
