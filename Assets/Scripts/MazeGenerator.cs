@@ -1,4 +1,8 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -6,15 +10,22 @@ public class MazeGenerator : MonoBehaviour
     private GameObject roomPrefab = null;
 
     
-    private int mazeHeight = 10;
-    private int mazeWidth = 15;
-    private Room[,] rooms = new Room[15, 15];
+    private int mazeHeight = 15;
+    private int mazeWidth = 20;
+    private Room[,] rooms;
     private float roomWidth = 1.0f;
     private float roomHeight = 1.0f;
+
+    //backtracking stack for the depth-first search algorithm
+    private Stack<Room> backtrackingStack = new Stack<Room>();
+
+    private bool generationComplete = false;
+    private bool isGenerating = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rooms = new Room[mazeWidth, mazeHeight];
         GetRoomBounds();
         for (int i = 0; i < mazeWidth; ++i)
         {
@@ -30,12 +41,23 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
+        Debug.Log("Maze generation started!");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        RemoveWall(1, 1, Room.WallOrientation.TOP);
+        if (!isGenerating)
+        {
+            isGenerating = true;
+            GenerateMaze();
+        }
+
+        if (generationComplete)
+        {
+            // remove loading screen 
+        }
     }
 
     private void GetRoomBounds()
@@ -104,7 +126,115 @@ public class MazeGenerator : MonoBehaviour
     private void GenerateMaze()
     {
         // Implement maze generation algorithm here: Depth-first search.
+        int startX = Random.Range(0, mazeWidth);
+        int startY = Random.Range(0, mazeHeight);
+
+        rooms[startX, startY].SetVisited(true);
+        backtrackingStack.Push(rooms[startX, startY]);
+
+        StartCoroutine(GenerateMazeCoroutine());
 
 
+    }
+
+    IEnumerator GenerateMazeCoroutine()
+    {
+        GenerateMazeDFS();
+        isGenerating = false;
+
+        yield return new WaitForSeconds(1f); // Wait for a short duration to visualize the maze generation
+        Debug.Log("Maze generation complete!");
+    }
+    
+    private void GenerateMazeDFS()
+    {
+        while (backtrackingStack.Count > 0)
+        {
+            Room currentRoom = backtrackingStack.Peek();
+            int x = currentRoom.index.x;
+            int y = currentRoom.index.y;
+
+            int[] nextRoomCoords = GetUnvisitedNeighbor(x, y);
+            int nextX = nextRoomCoords != null ? nextRoomCoords[0] : x;
+            int nextY = nextRoomCoords != null ? nextRoomCoords[1] : y;
+            Room nextRoom = null;
+
+            if (nextRoomCoords != null)
+            {
+                nextRoom = rooms[nextX, nextY];
+            }
+
+            if (nextRoom != null)
+            {
+                RemoveWall(x, y, GetWallOrientation(currentRoom, nextRoom));
+
+                // Mark the next room as visited and push it onto the stack
+                nextRoom.SetVisited(true);
+                backtrackingStack.Push(nextRoom);
+            }
+            else
+            {
+                // Backtrack to the previous room
+                backtrackingStack.Pop();
+            }
+        }
+
+        generationComplete = true;
+    }
+
+    private Room.WallOrientation GetWallOrientation(Room currentRoom, Room nextRoom)
+    {
+        int xDiff = nextRoom.index.x - currentRoom.index.x;
+        int yDiff = nextRoom.index.y - currentRoom.index.y;
+
+        if (xDiff == 1 && yDiff == 0)
+        {
+            return Room.WallOrientation.RIGHT;
+        }
+        else if (xDiff == -1 && yDiff == 0)
+        {
+            return Room.WallOrientation.LEFT;
+        }
+        else if (xDiff == 0 && yDiff == 1)
+        {
+            return Room.WallOrientation.TOP;
+        }
+        else if (xDiff == 0 && yDiff == -1)
+        {
+            return Room.WallOrientation.BOTTOM;
+        }
+
+        return Room.WallOrientation.NONE; // No valid orientation found
+    }
+    private int[] GetUnvisitedNeighbor(int x, int y)
+    {
+        // Check the four possible neighbors (top, bottom, left, right)
+        List<int[]> unvisitedNeighbors = new List<int[]>();
+
+        // Check the four possible neighbors (top, bottom, left, right)
+        if (y + 1 < mazeHeight && !rooms[x, y + 1].HasBeenVisited())
+        {
+            unvisitedNeighbors.Add(new int[] { x, y + 1 });
+        }
+        if (y - 1 >= 0 && !rooms[x, y - 1].HasBeenVisited())
+        {
+            unvisitedNeighbors.Add(new int[] { x, y - 1 });
+        }
+        if (x - 1 >= 0 && !rooms[x - 1, y].HasBeenVisited())
+        {
+            unvisitedNeighbors.Add(new int[] { x - 1, y });
+        }
+        if (x + 1 < mazeWidth && !rooms[x + 1, y].HasBeenVisited())
+        {
+            unvisitedNeighbors.Add(new int[] { x + 1, y });
+        }
+
+        if (unvisitedNeighbors.Count > 0)
+        {
+            int randomIndex = Random.Range(0, unvisitedNeighbors.Count);
+            return unvisitedNeighbors[randomIndex];
+        }
+
+        return null; // No unvisited neighbors
     }
 }
