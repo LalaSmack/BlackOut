@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField]
-    private GameObject roomPrefab = null;
+    private GameObject roomPrefab;
 
     
     private int mazeHeight = 15;
@@ -25,6 +25,12 @@ public class MazeGenerator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (roomPrefab == null)
+        {
+            Debug.LogError("Room prefab is not assigned! Instance: " + gameObject.name);
+            return;
+            
+        }
         rooms = new Room[mazeWidth, mazeHeight];
         GetRoomBounds();
         for (int i = 0; i < mazeWidth; ++i)
@@ -35,12 +41,13 @@ public class MazeGenerator : MonoBehaviour
                   new Vector3(i * roomWidth, j * roomHeight, 0.0f),
                   Quaternion.identity);
 
-                room.name = "Room_" + i.ToString() + "_" + j.ToString();
+                //room.name = "Room_" + i.ToString() + "_" + j.ToString();
                 rooms[i, j] = room.GetComponent<Room>();
                 rooms[i, j].index = new Vector2Int(i, j);
             }
         }
 
+        
         Debug.Log("Maze generation started!");
 
     }
@@ -93,7 +100,7 @@ public class MazeGenerator : MonoBehaviour
         }
 
         Room currentRoom = rooms[i, j];
-        Debug.Log(currentRoom.name + " " + currentRoom.GetWallState(direction).ToString());
+        //Debug.Log(currentRoom.name + " " + currentRoom.GetWallState(direction).ToString());
         Room.WallOrientation opp = Room.WallOrientation.NONE;
 
         if ((direction == Room.WallOrientation.TOP) && (j + 1 < mazeHeight))
@@ -140,7 +147,7 @@ public class MazeGenerator : MonoBehaviour
     IEnumerator GenerateMazeCoroutine()
     {
         GenerateMazeDFS();
-        isGenerating = false;
+        
 
         yield return new WaitForSeconds(1f); // Wait for a short duration to visualize the maze generation
         Debug.Log("Maze generation complete!");

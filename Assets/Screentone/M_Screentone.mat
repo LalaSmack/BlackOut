@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Halftone
-  m_Shader: {fileID: -6465566751694194690, guid: b068ec567b722e747bb12e6c03e8c87b, type: 3}
+  m_Name: M_Screentone
+  m_Shader: {fileID: -6465566751694194690, guid: 63a96b9bca71f5a43a77331579732a0f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -60,6 +60,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _playerPos: {r: 0.72633594, g: 0.483, b: 0, a: 0}
+    - _dotColor: {r: 0.9622641, g: 0.36009246, b: 0.36009246, a: 0}
+    - _playerPos: {r: 0.689768, g: 0.596875, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
