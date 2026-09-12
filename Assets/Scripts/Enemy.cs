@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Transform playerTransform;
+    public Vector2 targetPosition {get; set; } = new Vector2(0, 0);
     
 
 

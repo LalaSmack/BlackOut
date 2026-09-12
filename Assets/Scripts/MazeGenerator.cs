@@ -244,4 +244,23 @@ public class MazeGenerator : MonoBehaviour
 
         return null; // No unvisited neighbors
     }
+
+    public Vector2 GetRandomRoomPosition(int i, int numberOfEnemies)
+    {
+        int offset = i/(numberOfEnemies );
+        int x = Random.Range(offset * mazeWidth, (1-offset) * mazeWidth);
+        int y = Random.Range(offset * mazeHeight, (1-offset) * mazeHeight);
+        GetRoomBounds();
+        return new Vector2(x * roomWidth, y * roomHeight);
+    }
+
+    public Vector2 GetRandomRoomPosition()
+    {
+        int x = Random.Range(0, mazeWidth);
+        int y = Random.Range(0, mazeHeight);
+        GetRoomBounds();
+        return new Vector2(x * roomWidth, y * roomHeight);
+    }
+    
+    
 }

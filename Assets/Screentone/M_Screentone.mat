@@ -61,6 +61,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _dotColor: {r: 0.9622641, g: 0.36009246, b: 0.36009246, a: 0}
-    - _playerPos: {r: 0.689768, g: 0.596875, b: 0, a: 0}
+    - _playerPos: {r: 0.4999236, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

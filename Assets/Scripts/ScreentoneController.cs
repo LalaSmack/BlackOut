@@ -28,11 +28,11 @@ public class Screentone2DController : MonoBehaviour
         lastPosition = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // 1. Calculate physical movement distance in world space
         float movement = Vector2.Distance(transform.position, lastPosition);
-        lastPosition = transform.position;
+        lastPosition = this.transform.position;
 
         if (movement > 0.001f) // Player is actively walking
         {
