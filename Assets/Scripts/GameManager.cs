@@ -4,7 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public Player player;
     public GameObject enemyPrefab;
-    private int numberOfEnemies = 5;
+    private int numberOfEnemies = 10;
 
     [SerializeField]
     private Vector2[] enemyPositions;

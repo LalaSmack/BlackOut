@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7203442470563734814}
   - component: {fileID: 585971519534295565}
   - component: {fileID: 1651541283402091911}
-  - component: {fileID: 8484786924138220562}
-  m_Layer: 0
+  - component: {fileID: 4347705426585823178}
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -135,11 +135,11 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1651541283402091911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dc8582278e5e9d45b524dbd22d2fe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!66 &8484786924138220562
-CompositeCollider2D:
+--- !u!70 &4347705426585823178
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -182,18 +182,10 @@ CompositeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths: []
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
-  m_UseDelaunayMesh: 0
-  m_CompositeGameObject: {fileID: 3545970365014971859}
+  m_Offset: {x: -0.22411065, y: -0.18381214}
+  m_Size: {x: 4.140423, y: 2.9175417}
+  m_Direction: 1

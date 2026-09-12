@@ -59,6 +59,7 @@ public class MazeGenerator : MonoBehaviour
         {
             isGenerating = true;
             GenerateMaze();
+            RemoveRandomWalls(20); // Remove 20 random walls to create loops in the maze
         }
 
         if (generationComplete)
@@ -262,5 +263,30 @@ public class MazeGenerator : MonoBehaviour
         return new Vector2(x * roomWidth, y * roomHeight);
     }
     
-    
+    private void RemoveRandomWalls(int numberOfWallsToRemove)
+    {
+        int wallsRemoved = 0;
+        while (wallsRemoved < numberOfWallsToRemove)
+        {
+            int x = Random.Range(0, mazeWidth);
+            int y = Random.Range(0, mazeHeight);
+
+            if (rooms[x, y].NumberofActiveWalls() <= 1 || IsBoundary(x, y))
+            {
+                continue; // Skip if the room has only one wall or is on the boundary
+            }
+            Room.WallOrientation direction = (Room.WallOrientation)Random.Range(0, 4); // Exclude NONE
+
+            if (rooms[x, y].GetWallState(direction))
+            {
+                RemoveWall(x, y, direction);
+                wallsRemoved++;
+            }
+        }
+    }
+
+    private bool IsBoundary(int x, int y)
+    {
+        return (x == 0 || x == mazeWidth - 1 || y == 0 || y == mazeHeight - 1);
+    }
 }

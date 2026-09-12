@@ -86,5 +86,15 @@ public class Room : MonoBehaviour
 
     }
 
+    public int NumberofActiveWalls()
+    {
+        int count = 0;
+        if (topWall.activeSelf) count++;
+        if (bottomWall.activeSelf) count++;
+        if (leftWall.activeSelf) count++;
+        if (rightWall.activeSelf) count++;
+        return count;
+    }
+
     
 }
